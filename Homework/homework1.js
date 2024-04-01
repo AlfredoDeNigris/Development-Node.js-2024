@@ -120,7 +120,9 @@ function stringMultiply(str1, str2) {
 }
 
 function validate(str) {
-    if (/^\d+$/.test(str)) { //Checking if input contains only numeric characters.
+    if (/^0+$/.test(str)) { // If input contains only zeros
+        return "0";
+    } else if (/^\d+$/.test(str)) { //Checking if input contains only numeric characters.
         return str; //Input contains only numeric characters.
     } else {
         throw new Error("Cannot perform arithmetic operation. At least one of the inputted characters is not a number.");
@@ -145,6 +147,6 @@ stringDivide("3", "33"); //Output: 0
 stringDivide("4k5", "3"); //Output: "Cannot perform arithmetic operation. At least one of the inputted characters is not a number."
 
 stringMultiply("99999999900000000000000", "999999999999999999999999"); //Output: 99999999899999999999999900000000100000000000000
-stringMultiply("8", "0"); //Output: 0
-stringMultiply("0", "34"); //Output: 0
+stringMultiply("8", "000000000000000000000000000000000"); //Output: 0
+stringMultiply("0000000000000000000000000000", "34"); //Output: 0
 stringMultiply("p222", "5"); //Output: "Cannot perform arithmetic operation. At least one of the inputted characters is not a number."
