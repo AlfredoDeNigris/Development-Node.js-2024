@@ -71,17 +71,34 @@ function stringDivide(str1, str2) {
         let num1 = validate(str1);
         let num2 = validate(str2);
 
-        num1 = parseInt(num1);
-        num2 = parseInt(num2);
-
         if (num2 == 0) {
             return console.log("Cannot perform division. The second number cannot be zero (0).");
         }
 
-        let result = 0;
-        while (num1 >= num2) {
-            num1 -= num2;
-            result++;
+        let dividendArr = str1.split('');
+
+        let result = '';
+        let remainder = 0;
+
+
+        for (let i = 0; i < dividendArr.length; i++) { //Iterate over each digit in the dividend.
+            let currentDigit = parseInt(dividendArr[i]) + remainder * 10;
+
+            if (currentDigit < parseInt(str2)) { //If current digit is smaller than divisor, append 0 to result.
+                result += '0';
+                remainder = currentDigit;
+            } else { //Perform division and update result and remainder.
+                let tempresult = Math.floor(currentDigit / parseInt(str2));
+                result += tempresult.toString();
+                remainder = currentDigit % parseInt(str2);
+            }
+        }
+
+        result = result.replace(/^0+/, '');// Remove leading zeros from result.
+
+
+        if (result === '') {// If result is empty, set it to '0', for example when the divisor is greater than the dividend.
+            result = '0';
         }
 
         return console.log(result.toString()); //Convert result back to string.
@@ -100,7 +117,7 @@ function stringMultiply(str1, str2) {
         }
 
 
-        let result = Array(num1.length + num2.length).fill(0); //Initialize result array filled with zeros
+        let result = Array(num1.length + num2.length).fill(0); //Initialize result array filled with zeros.
 
         for (let i = num1.length - 1; i >= 0; i--) {
             for (let j = num2.length - 1; j >= 0; j--) {
@@ -113,14 +130,14 @@ function stringMultiply(str1, str2) {
 
         result = result.join('').replace(/^0+/, '');// Convert result array to string
 
-        return console.log(result.toString());
+        return console.log(result.toString()); //Convert result back to string.
     } catch (error) {
         console.log(error.message);
     }
 }
 
 function validate(str) {
-    if (/^0+$/.test(str)) { // If input contains only zeros
+    if (/^0+$/.test(str)) { //If input contains only zeros.
         return "0";
     } else if (/^\d+$/.test(str)) { //Checking if input contains only numeric characters.
         return str; //Input contains only numeric characters.
@@ -145,6 +162,8 @@ stringDivide("20", "1"); //Output: 20
 stringDivide("100", "0"); //Output: "Cannot perform division. The second number cannot be zero (0)."
 stringDivide("3", "33"); //Output: 0
 stringDivide("4k5", "3"); //Output: "Cannot perform arithmetic operation. At least one of the inputted characters is not a number."
+stringDivide("2222222222222222222222222000", "2222222222222222222222222"); //Output: 1000
+stringDivide("2222222222222222222222222000", "2"); //Output: 1111111111111111111111111000
 
 stringMultiply("99999999900000000000000", "999999999999999999999999"); //Output: 99999999899999999999999900000000100000000000000
 stringMultiply("8", "000000000000000000000000000000000"); //Output: 0
