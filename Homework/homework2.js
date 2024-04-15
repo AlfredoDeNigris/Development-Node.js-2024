@@ -7,7 +7,7 @@ homework2.addValues = function (arg1, arg2) {
             return arg1 + arg2;
         }
 
-        if (typeof arg1 === 'string' || typeof arg2 === 'string') {//Check if any value is a string.
+        if (typeof arg1 === 'string' && typeof arg2 === 'string') {//Check if any value is a string.
             return arg1 + arg2;
         }
 
@@ -100,9 +100,9 @@ homework2.coerceToType = function (value, type) {
 
 
 console.log(homework2.addValues(5, 3)); //Output: 8.
-console.log(homework2.addValues('5dsds', '3')); //Output: 53.
-console.log(homework2.addValues('5', 3)); //Output: "53".
-console.log(homework2.addValues(true, 3)); //Addition not possible for the given types.
+console.log(homework2.addValues('5dsds', '3')); //Output: 5dsds3.
+console.log(homework2.addValues('5', 3)); //Output: Addition not possible for the given types.
+console.log(homework2.addValues(true, 3)); //Output: Addition not possible for the given types.
 
 console.log(homework2.stringifyValue(5)); // Output: "5".
 console.log(homework2.stringifyValue('hello')); // Output: "hello".
@@ -122,7 +122,7 @@ console.log(homework2.convertToNumber('test')); //Output:Conversion to number no
 console.log(homework2.coerceToType('42', 'number')); //Output: 42.
 console.log(homework2.coerceToType(42, 'string')); //Output: "42".
 console.log(homework2.coerceToType('true', 'boolean')); //Output: true.
-console.log(homework2.coerceToType('hello', 'number')); //Conversion to number not possible for the given type.
+console.log(homework2.coerceToType('hello', 'number')); //Output: Conversion to number not possible for the given type.
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') { //Exporting library.
     module.exports = homework2;
