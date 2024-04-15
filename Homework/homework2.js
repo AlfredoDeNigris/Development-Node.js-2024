@@ -57,12 +57,12 @@ homework2.convertToNumber = function (arg) {
     try {
         if (typeof arg === 'string') {
             const parsedFloat = parseFloat(arg);
-            if (!isNaN(parsedFloat)) {
-                return parsedFloat;
-            }
             const parsedInt = parseInt(arg);
-            if (!isNaN(parsedInt)) {
-                return parsedInt;
+
+            if (!isNaN(parsedFloat) || !isNaN(parsedInt)) {
+                return !isNaN(parsedFloat) ? parsedFloat : parsedInt;
+            } else {
+                throw new Error('Conversion to number not possible for the given type.');
             }
         } else if (typeof arg === 'number') {
             return arg;
@@ -70,7 +70,7 @@ homework2.convertToNumber = function (arg) {
             throw new Error('Conversion to number not possible for the given type.');
         }
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
     }
 };
 
@@ -78,19 +78,9 @@ homework2.coerceToType = function (value, type) {
     try {
         switch (type) {
             case 'number':
-                if (typeof value === 'string') {
-                    const parsedFloat = parseFloat(value);
-                    if (!isNaN(parsedFloat)) {
-                        return parsedFloat;
-                    }
-                    const parsedInt = parseInt(value);
-                    if (!isNaN(parsedInt)) {
-                        return parsedInt;
-                    }
-                }
-                return Number(value);
+                return homework2.convertToNumber(value);
             case 'string':
-                return String(value);
+                return homework2.stringifyValue(value);
             case 'boolean':
                 if (typeof value === 'string') {
                     if (value.toLowerCase() === 'true') {
@@ -127,11 +117,12 @@ console.log(homework2.invertBoolean(false)); //Output: true.
 console.log(homework2.convertToNumber('42')); //Output:42.
 console.log(homework2.convertToNumber('3.14')); //Output:3.14.
 console.log(homework2.convertToNumber(42)); //Output:42.
+console.log(homework2.convertToNumber('test')); //Output:Conversion to number not possible for the given type.
 
 console.log(homework2.coerceToType('42', 'number')); //Output: 42.
 console.log(homework2.coerceToType(42, 'string')); //Output: "42".
 console.log(homework2.coerceToType('true', 'boolean')); //Output: true.
-console.log(homework2.coerceToType('hello', 'number')); //Throws an error.
+console.log(homework2.coerceToType('hello', 'number')); //Conversion to number not possible for the given type.
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') { //Exporting library.
     module.exports = homework2;
