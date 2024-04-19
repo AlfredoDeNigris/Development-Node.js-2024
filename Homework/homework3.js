@@ -45,39 +45,48 @@ console.log(products); //The array remains the same even after the function is d
 
 const getFullName = person => `${person.firstName} ${person.lastName}`;
 
-const filterUniqueWords = text => [...new Set(text.split(/\s+/))].sort();
+const filterUniqueWords = text => {
+    const words = text.toLowerCase().split(/\s+/);
+    const uniqueWords = [...new Set(words)];
+    return uniqueWords.sort();
+};
+
 
 const getAverageGrade = students => {
-    const grades = students.flatMap(student => student.grades);
-    const total = grades.reduce((sum, grade) => sum + grade, 0);
-    return total / grades.length;
+    return students.map(student => {
+        const total = student.grades.reduce((sum, grade) => sum + grade, 0);
+        return { name: student.name, averageGrade: total / student.grades.length };
+    });
 };
+
 
 //Test Cases:
 
-// Test cases for getFullName function
 const person1 = { firstName: "John", lastName: "Doe" };
 console.log(getFullName(person1)); //Output: "John Doe"
 
 const person2 = { firstName: "Jane", lastName: "Smith" };
 console.log(getFullName(person2)); //Output: "Jane Smith"
 
-// Test cases for filterUniqueWords function
-const text1 = "apple banana apple orange banana";
+const text1 = "Apple Banana apple orAnge banana oRangE";
 console.log(filterUniqueWords(text1)); //Output: ["apple", "banana", "orange"]
 
-const text2 = "hello world hello world hello world";
+const text2 = "hELlo world Hello wOrld hello woRLd";
 console.log(filterUniqueWords(text2)); //Output: ["hello", "world"]
 
-// Test cases for getAverageGrade function
 const students = [
     { name: "John", grades: [80, 90, 85] },
     { name: "Jane", grades: [70, 75, 80] },
     { name: "Alice", grades: [90, 95, 95] }
 ];
-console.log(getAverageGrade(students)); //Output: 84.44444444444444
-
-
+console.log(getAverageGrade(students));
+/*Output:
+[
+  { name: 'John', averageGrade: 85 },
+  { name: 'Jane', averageGrade: 75 },
+  { name: 'Alice', averageGrade: 93.33333333333333 }
+]
+*/
 //Task 3:
 
 function createCounter() {
@@ -126,7 +135,7 @@ Hello!
 Hello!
 */
 
-//Lines 129 and 130 are commented to facilitate evaluation, since they are ment to keep printing "Hello!" indefinitely until stopped manually.
+//Lines 138 and 139 are commented to facilitate evaluation, since they are ment to keep printing "Hello!" indefinitely until stopped manually.
 /*const repeatIndefinitely = repeatFunction(greet, -1);
 repeatIndefinitely();*/
 
