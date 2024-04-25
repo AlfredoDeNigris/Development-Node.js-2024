@@ -7,27 +7,36 @@ const person = {
     email: "john.doe@example.com"
 };
 
-Object.keys(person).forEach(prop => {
-    Object.defineProperty(person, prop, {
-        value: person[prop],
-        writable: false,
-        enumerable: true,
-        configurable: false
-    });
-});
+function makePropertiesReadOnly(obj) {
+    for (const prop in obj) {
+        if (typeof obj[prop] === 'object' && obj[prop] !== null) {
+            makePropertiesReadOnly(obj[prop]);
+        }
 
-person.updateInfo = function (newInfo) {
+        Object.defineProperty(obj, prop, {
+            value: obj[prop],
+            writable: false,
+            enumerable: true,
+            configurable: false
+        });
+    }
+}
+
+function updateInfo(obj, newInfo) {
     try {
-        Object.keys(newInfo).forEach(prop => {
-            if (this.hasOwnProperty(prop)) {
+        for (const prop in newInfo) {
+            if (obj.hasOwnProperty(prop)) {
                 throw new Error(`Property '${prop}' is read-only and cannot be updated.`);
             }
-        });
-        Object.assign(this, newInfo);
+        }
+        Object.assign(obj, newInfo);
     } catch (error) {
         console.log(error.message);
     }
-};
+}
+
+makePropertiesReadOnly(person);
+person.updateInfo = updateInfo;
 
 Object.defineProperty(person, 'address', {
     value: {},
@@ -39,7 +48,8 @@ Object.defineProperty(person, 'address', {
 //Test Cases:
 
 console.log("Before update:", person); //Output: "person" object.
-person.updateInfo({ firstName: "Jane", age: 32 }); //Output: Property 'firstName' is read-only and cannot be updated.
+updateInfo(person, { firstName: "Jane" }); // Output: Property 'firstName' is read-only and cannot be updated.
+updateInfo(person, { age: 32 }); // Output: Property 'age' is read-only and cannot be updated.
 console.log("After update:", person); //Output: "person" object.
 
 
@@ -153,7 +163,6 @@ bankAccount.transfer(targetAccount, 300);
 console.log("Balance after transfer:", bankAccount.formattedBalance); //Output: Balance after transfer: $700
 console.log("Balance of target account after transfer: $", targetAccount.balance); //Output: Balance of target account after transfer: $800
 
-
 //Task 4:
 
 function createImmutableObject(obj) {
@@ -174,12 +183,26 @@ function createImmutableObject(obj) {
     return immutableObj;
 }
 
+
+const originalObject = {
+    name: "Example Object",
+    details: {
+        numbers: [1, 2, 3]
+    }
+};
+
 //Test Cases:
 
 const immutablePerson = createImmutableObject(person);
-console.log(Object.getOwnPropertyDescriptors(immutablePerson)); // Output: inmutablePerson object.
-immutablePerson.updateInfo({ firstName: "Jane" }); //Output: Property 'firstName' is read-only and cannot be updated.
-immutablePerson.updateInfo({ age: 32 }); //Output: Property 'age' is read-only and cannot be updated.
+console.log(Object.getOwnPropertyDescriptors(immutablePerson)); //Output: inmutablePerson object.
+updateInfo(immutablePerson, { firstName: "Jane" }); //Output: Property 'firstName' is read-only and cannot be updated.
+updateInfo(immutablePerson, { age: 32 }); //Output: Property 'age' is read-only and cannot be updated.
+
+
+const immutableOriginalObject = createImmutableObject(originalObject);
+updateInfo(immutableOriginalObject, { name: "Updated Object" }); //Output: Property 'name' is read-only and cannot be updated.
+console.log("Immutable Object:", immutableOriginalObject);
+
 
 
 //Task 5:
@@ -233,21 +256,21 @@ function deepCloneObject(obj, clonedObjects = new WeakMap()) {
 
 //Test Cases:
 
-const originalObject = {
+const originalObject1 = { //Changed the name of this variable to not conflict with the new one.
     a: 1,
     b: [2, 3, 4],
     c: { d: 5, e: { f: 6 } }
 };
 
-originalObject.circularRef = originalObject;
+originalObject1.circularRef = originalObject1;
 
-const clonedObject = deepCloneObject(originalObject);
+const clonedObject = deepCloneObject(originalObject1);
 
-console.log("Original object:", originalObject); //Output: Original object "originalObject"
+console.log("Original object:", originalObject1); //Output: Original object "originalObject"
 console.log("Cloned object:", clonedObject); //Output: Cloned object "clonedObject"
-console.log("Are they equal?", originalObject === clonedObject); //Output: Are they equal? false
-console.log(originalObject.circularRef === clonedObject.circularRef); //Output: false
-console.log("Circular reference - Original:", originalObject.circularRef); //Output: originalObject
+console.log("Are they equal?", originalObject1 === clonedObject); //Output: Are they equal? false
+console.log(originalObject1.circularRef === clonedObject.circularRef); //Output: false
+console.log("Circular reference - Original:", originalObject1.circularRef); //Output: originalObject
 console.log("Circular reference - Cloned:", clonedObject.circularRef); //Output: clonedObject
 
 
