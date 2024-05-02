@@ -6,53 +6,38 @@ function customFilterUnique(array, callback) {
 
     array.forEach(item => {
         const key = callback(item);
-        const normalizedKey = (typeof key === 'string') ? key.toLowerCase() : key;
 
-        if (!uniqueKeys.has(normalizedKey)) {
-            uniqueKeys.add(normalizedKey);
-            uniqueValues.push(item);
+        if (key !== undefined) {
+            const normalizedKey = JSON.stringify(key);
+
+            if (!uniqueKeys.has(normalizedKey)) {
+                uniqueKeys.add(normalizedKey);
+                uniqueValues.push(item);
+            }
         }
     });
 
     return uniqueValues;
 }
 
+
 //Test Cases:
 
-const data1 = [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Jane' },
-    { id: 3, name: 'john' },
-    { id: 4, name: 'Doe' },
-    { id: 5, name: 'dOe' },
-    { id: 6, name: 'DoE' },
-    { id: 7, name: 'jANe' }
+let arrayOfObjects = [
+    { a: 1, b: 2 },
+    { a: 1, b: 2 },
+    { c: 3, d: 4 },
+    { a: 5, b: 6 },
+    { e: 7, f: 8 },
+    { g: 9, h: 0 }
 ];
 
+const filterByPropertyA = (obj) => {
+    if (!obj || typeof obj !== "object") throw new Error("pass an object as parameter")
+    return Object.keys(obj).includes("a") ? obj : undefined
+}
 
-console.log(customFilterUnique(data1, item => item.name));
-/*
-Output:
-[
-  { id: 1, name: 'John' },
-  { id: 2, name: 'Jane' },
-  { id: 4, name: 'Doe' }  
-]
-*/
-
-console.log(customFilterUnique(data1, item => item.id));
-/*
-Output:
-[
-  { id: 1, name: 'John' },
-  { id: 2, name: 'Jane' },
-  { id: 3, name: 'john' },
-  { id: 4, name: 'Doe' },
-  { id: 5, name: 'dOe' },
-  { id: 6, name: 'DoE' },
-  { id: 7, name: 'jANe' }
-]
-*/
+console.log(customFilterUnique(arrayOfObjects, filterByPropertyA));//Output: [ { a: 1, b: 2 }, { a: 5, b: 6 } ]
 
 
 //Task 2:
@@ -70,12 +55,12 @@ function chunkArray(array, chunkSize) {
 }
 
 //Test Cases:
-const data2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const data1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-console.log(chunkArray(data2, 2)); //Output: [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 7, 8 ], [ 9, 10 ], [ 11, 12 ] ]
-console.log(chunkArray(data2, 3)); //Output: [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ], [ 10, 11, 12 ] ]
-console.log(chunkArray(data2, 4)); //Output: [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ], [ 9, 10, 11, 12 ] ]
-console.log(chunkArray(data2, 6)); //Output: [ [ 1, 2, 3, 4, 5, 6 ], [ 7, 8, 9, 10, 11, 12 ] ]
+console.log(chunkArray(data1, 2)); //Output: [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 7, 8 ], [ 9, 10 ], [ 11, 12 ] ]
+console.log(chunkArray(data1, 3)); //Output: [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ], [ 10, 11, 12 ] ]
+console.log(chunkArray(data1, 4)); //Output: [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ], [ 9, 10, 11, 12 ] ]
+console.log(chunkArray(data1, 6)); //Output: [ [ 1, 2, 3, 4, 5, 6 ], [ 7, 8, 9, 10, 11, 12 ] ]
 
 
 //Task 3:
@@ -93,11 +78,11 @@ function customShuffle(array) {
 }
 
 //Test Cases:
-const data3 = [1, 2, 3, 4, 5];
+const data2 = [1, 2, 3, 4, 5];
 
-console.log(customShuffle(data3)); //Output: data3 array shuffled
-console.log(customShuffle(data3)); //Output: data3 array shuffled
-console.log(customShuffle(data3)); //Output: data3 array shuffled
+console.log(customShuffle(data2)); //Output: data2 array shuffled
+console.log(customShuffle(data2)); //Output: data2 array shuffled
+console.log(customShuffle(data2)); //Output: data2 array shuffled
 
 
 //Task 4:
