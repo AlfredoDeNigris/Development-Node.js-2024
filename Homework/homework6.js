@@ -71,21 +71,27 @@ console.log(highlighted);
 //Task 3:
 
 function multiline(strings, ...values) {
-    const template = strings.reduce((acc, str, i) => acc + str + (values[i] || ''), '');
+    let result = strings.reduce((acc, str, i) => acc + str + (values[i] || ''), '');
 
-    const lines = template.split('\n');
+    const lines = result.split(/\r?\n/);
 
-    let lineNumber = 0;
+    const indentation = lines.reduce((minIndentation, line) => {
+        if (line.trim() === '') return minIndentation;
+        const leadingWhitespace = line.match(/^\s*/)[0];
+        return Math.min(minIndentation, leadingWhitespace.length);
+    }, Infinity);
+
+    let lineNumber = 1;
     const numberedLines = lines.map((line) => {
-        const indentation = line.match(/^\s*/)[0];
-        const trimmedLine = line.trim();
-        const numberedLine = trimmedLine ? `${lineNumber} ${trimmedLine}` : '';
+        if (line.trim() === '') return '';
+        const indentedLineNumber = `${lineNumber} `.padStart(String(lines.length).length + 1);
         lineNumber++;
-        return numberedLine ? `${indentation}${numberedLine}` : '';
+        return `${indentedLineNumber}${line.slice(indentation)}`;
     });
 
-    return numberedLines.join('\n').trim();
+    return numberedLines.join('\n');
 }
+
 
 const code = multiline`
 function add(a, b) {
@@ -93,12 +99,13 @@ function add(a, b) {
 }
 `;
 
+
 //Test Case:
 
 console.log(code);
 /*
 1 function add(a, b) {
-    2 return a + b;
+2     return a + b;
 3 }
 */
 
