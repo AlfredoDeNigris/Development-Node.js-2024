@@ -64,16 +64,28 @@ promiseAll(promisesWithFailure)
 //Task 2:
 
 function promiseAllSettled(promises) {
-  return Promise.all(promises.map(promise =>
-    promise.then(value => ({
-      status: 'fulfilled',
-      value
-    })).catch(reason => ({
-      status: 'rejected',
-      reason
-    }))
-  ));
+  return new Promise((resolve) => {
+    const settledResults = [];
+    let settledCount = 0;
+
+    promises.forEach((promise, index) => {
+      promise
+        .then((value) => {
+          settledResults[index] = { status: 'fulfilled', value };
+        })
+        .catch((reason) => {
+          settledResults[index] = { status: 'rejected', reason };
+        })
+        .finally(() => {
+          settledCount++;
+          if (settledCount === promises.length) {
+            resolve(settledResults);
+          }
+        });
+    });
+  });
 }
+
 
 
 //Test Case:
