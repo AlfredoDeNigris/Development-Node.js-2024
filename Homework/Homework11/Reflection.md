@@ -1,4 +1,4 @@
-# Implementing a JSON parser with regular expressions was both challenging and rewarding. Here's a brief reflection on my experience:
+# Here's a brief reflection on my experience:
 
 ## Challenges Encountered:
 
