@@ -226,29 +226,3 @@ Input: {"escaped": "A\tB\nC\rD\"E\fF\bG"}
 Parsed: { escaped: 'A\tB\nC\rD"E\fF\bG' }
 
 */
-
-
-
-
-
-/*
-Implement a simplified version of the `JSON.parse` function in JavaScript using regular expressions.
-
-Create a JavaScript function called `myJSONParse` that takes a JSON-formatted string as input and returns the corresponding JavaScript object. You should use regular expressions to tokenize and parse the input string.
-Implement tokenization by using regular expressions to identify JSON elements (objects, arrays, strings, numbers, booleans, null, etc.) in the input string.
-Implement a parsing algorithm that processes the tokens generated in the previous step and constructs the corresponding JavaScript object.
-Ensure the implementation handles common JSON syntax errors gracefully and provides informative error messages when parsing fails.
-Test `myJSONParse` function with various JSON strings to ensure it can correctly parse them into JavaScript objects.
-
-### **Part 3: Documentation and Reflection**
-
-Provide clear comments and documentation in your code to explain how your `myJSONParse` function works and how you used regular expressions.
-Write a brief reflection on your experience implementing a JSON parser with regular expressions.
-Discuss any challenges you encountered and how you addressed them.
-
-
-### **Bonus Challenge**
-
-extend `myJSONParse` function to handle additional JSON features,
-such as Unicode escapes, handling of special characters in strings, and custom revivers similar to the native `JSON.parse` function.
-*/
